@@ -1,4 +1,4 @@
-package main
+package httputil
 
 import (
 	"context"
@@ -11,7 +11,7 @@ import (
 )
 
 type (
-	instance interface {
+	Instance interface {
 		Start() error
 		ShutDown() error
 	}
@@ -21,7 +21,7 @@ type (
 	}
 )
 
-func newInstance(server *http.Server) instance {
+func NewInstance(server *http.Server) Instance {
 	return &instanceImpl{
 		httpServer: server,
 	}
@@ -32,6 +32,7 @@ func (s *instanceImpl) Start() error {
 		s.httpServer = &http.Server{}
 	}
 
+	logrus.Println("service running in", s.httpServer.Addr)
 	err := s.httpServer.ListenAndServe() // Blocking
 	if err == http.ErrServerClosed {
 		logrus.WithError(err).Error("http server is closed")
@@ -47,7 +48,7 @@ func (s *instanceImpl) ShutDown() error {
 		return errors.New("http server is nil")
 	}
 
-	ctx, _ := context.WithTimeout(context.Background(), 10 * time.Second)
+	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 	err := s.httpServer.Shutdown(ctx)
 	if err != nil {
 		logrus.WithError(err).Error("failed to shutdown http server")
