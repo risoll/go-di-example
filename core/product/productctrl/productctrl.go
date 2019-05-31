@@ -10,6 +10,7 @@ type (
 		GetByID(id int64) (models.Product, error)
 	}
 
+	// TODO add more dependencies
 	productCtrlImpl struct {
 		service productservice.ProductService
 	}
