@@ -1,9 +1,9 @@
+version: 2.1
 orbs:
   codecov: codecov/codecov@1.0.2
 
 # Orchestrate or schedule a set of jobs, see https://circleci.com/docs/2.0/workflows/
 workflows:
-  version: 2.1
   # Name the workflow "codecov"
   codecov:
     jobs:
