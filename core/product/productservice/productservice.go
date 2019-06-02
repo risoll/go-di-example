@@ -20,7 +20,7 @@ func New(db dbutil.DB) ProductService {
 }
 
 func (s *productServiceImpl) GetByID(id int64) (models.Product, error){
-	query := `SELECT * from product where id = $1`
+	query := `SELECT * from product where id = ?`
 	var result models.Product
 	err := s.db.Select(&result, query, id)
 	return result, err
