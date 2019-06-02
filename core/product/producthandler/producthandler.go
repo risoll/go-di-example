@@ -1,12 +1,14 @@
 package producthandler
 
 import (
-	"github.com/risoll/tokosidia/core/product/productctrl"
-	"github.com/risoll/tokosidia/utils/httputil"
 	"net/http"
 	"strconv"
 
+	"github.com/sirupsen/logrus"
 	"github.com/julienschmidt/httprouter"
+
+	"github.com/risoll/tokosidia/core/product/productctrl"
+	"github.com/risoll/tokosidia/utils/httputil"
 )
 
 type (
@@ -31,6 +33,7 @@ func (h *productHandlerImpl) Get(w http.ResponseWriter, r *http.Request, p httpr
 	productID, _ := strconv.ParseInt(p.ByName("id"), 10, 64)
 	data, err := h.ctrl.GetByID(productID)
 	if err != nil {
+		logrus.Errorf("[ProductHandler][Get]%s", err.Error())
 		res.WriteError(w, http.StatusBadRequest, []string{"invalid product id"})
 		return
 	}
